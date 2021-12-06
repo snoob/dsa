@@ -1,0 +1,58 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+    COMPOSER_EXEC: 'symfony composer'
+    PHP_EXEC: 'symfony php'
+
+tasks:
+    default:
+        cmds:
+            - 'task --list'
+
+    composer:
+        desc: 'Update the dependencies'
+        cmds:
+            - '{{.COMPOSER_EXEC}} install'
+
+    install:
+        desc: 'Setup the project'
+        deps: [ 'composer', 'install:env' ]
+
+    start:
+        desc: 'Start the project'
+        cmds:
+            - task: 'install'
+            - task: 'export:club'
+
+    lint:
+        desc: 'Run linters'
+        cmds:
+            - task: 'lint-php'
+            - task: 'lint-composer'
+
+    lint-php:
+        desc: 'Run php-cs-fixer'
+        cmds:
+            - '{{.PHP_EXEC}} vendor/bin/php-cs-fixer fix --verbose'
+
+    lint-composer:
+        desc: 'Run composer.json linter'
+        cmds:
+            - '{{.COMPOSER_EXEC}} validate'
+
+    quality:
+        desc: 'Run quality scripts'
+        cmds:
+            - task: 'lint'
+
+    install:env:
+        desc: 'Generate .env.local file'
+        cmds:
+            - 'touch -c .env.local'
+
+    export:club:
+        desc: 'Export your club data'
+        cmds:
+            - '{{.PHP_EXEC}} bin/console app:export:club'

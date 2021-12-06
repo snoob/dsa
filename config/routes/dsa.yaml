@@ -1,0 +1,11 @@
+club:
+    path: '/guilds/{id}'
+
+player:
+    path: '/players/{id}'
+
+toon_list:
+    path: '/characters'
+
+toon_progress:
+  path: '/players/{playerId}/characters/{id}'

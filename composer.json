@@ -1,0 +1,85 @@
+{
+    "name": "snoob/dsa-export",
+    "description": "Export DSA data",
+    "type": "project",
+    "license": "proprietary",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.1",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "doctrine/annotations": "^1.13",
+        "doctrine/collections": "^1.6",
+        "elao/enum": "^1.17",
+        "phpoffice/phpspreadsheet": "dev-master",
+        "symfony/console": "^6.0",
+        "symfony/css-selector": "^6.0",
+        "symfony/dom-crawler": "^6.0",
+        "symfony/dotenv": "^6.0",
+        "symfony/flex": "^1.17|^2",
+        "symfony/framework-bundle": "^6.0",
+        "symfony/http-client": "^6.0",
+        "symfony/routing": "^6.0",
+        "symfony/runtime": "^6.0",
+        "symfony/string": "^6.0",
+        "symfony/translation": "^6.0",
+        "symfony/uid": "^6.0",
+        "symfony/yaml": "^6.0"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true,
+            "symfony/runtime": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "replace": {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "^6.0"
+        }
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.6",
+        "rector/rector": "^0.12.16",
+        "symfony/debug-bundle": "^6.0",
+        "symfony/maker-bundle": "^1.36",
+        "symfony/monolog-bundle": "^3.0",
+        "symfony/stopwatch": "^6.0"
+    }
+}

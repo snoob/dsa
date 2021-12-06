@@ -1,0 +1,6 @@
+dsa:
+    resource: './routes/dsa.yaml'
+    name_prefix: 'dsa_'
+    host: 'dsa.fan'
+    schemes: ['https']
+

@@ -1,0 +1,22 @@
+column:
+    toon: 'Personnage'
+    star: 'Etoiles'
+    gear: 'Equipement'
+    date: "Date"
+    club: "Club"
+    tag: "Equipe"
+    members: 'Membres'
+
+row:
+    is_eligible: 'Eligible'
+
+toon:
+    name:
+        chip: 'Tic'
+        dale: 'Tac'
+        monterey-jack: 'Jack le costaud'
+    category:
+        adventurer: 'Aventurier'
+        onward: 'En avant'
+        tangled: 'Raiponce'
+        the-incredibles: 'Les indestructibles'
