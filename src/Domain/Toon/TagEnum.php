@@ -22,7 +22,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  * @method static self TANGLED()
  * @method static self THE_INCREDIBLES()
  */
-final class ToonTagEnum extends Enum implements CacheableInterface, TranslatableInterface
+final class TagEnum extends Enum implements CacheableInterface, TranslatableInterface
 {
     use AutoDiscoveredValuesTrait;
 

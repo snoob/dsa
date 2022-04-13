@@ -11,12 +11,12 @@ final class Toon implements TranslatableInterface, \Stringable
     private string $id;
 
     /**
-     * @var array<string, ToonTagEnum>
+     * @var array<string, TagEnum>
      */
     private array $tags;
 
     /**
-     * @param array<int, ToonTagEnum> $tags
+     * @param array<int, TagEnum> $tags
      */
     public function __construct(string $id, array $tags)
     {
@@ -37,7 +37,7 @@ final class Toon implements TranslatableInterface, \Stringable
     }
 
     /**
-     * @return array<string, ToonTagEnum>
+     * @return array<string, TagEnum>
      */
     public function getTags(): array
     {

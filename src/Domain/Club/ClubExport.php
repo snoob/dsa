@@ -6,13 +6,13 @@ namespace App\Domain\Club;
 
 use App\Domain\GameMode\AbstractMode;
 use App\Domain\Player\Player;
-use App\Domain\Toon\ToonTagEnum;
+use App\Domain\Toon\TagEnum;
 
 final class ClubExport
 {
     private Club $club;
 
-    private ToonTagEnum $tag;
+    private TagEnum $tag;
 
     /**
      * @var array<int, AbstractMode>
@@ -27,7 +27,7 @@ final class ClubExport
     /**
      * @param array<int, AbstractMode> $gameModes
      */
-    public function __construct(Club $club, ToonTagEnum $tag, array $gameModes)
+    public function __construct(Club $club, TagEnum $tag, array $gameModes)
     {
         $this->club = $club;
         $this->tag = $tag;
@@ -35,7 +35,7 @@ final class ClubExport
         $this->playersEligibility = [];
     }
 
-    public function getTag(): ToonTagEnum
+    public function getTag(): TagEnum
     {
         return $this->tag;
     }

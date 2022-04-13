@@ -6,19 +6,19 @@ namespace App\Domain\GameMode;
 
 use App\Domain\Player\Player;
 use App\Domain\Toon\ToonProgress;
-use App\Domain\Toon\ToonTagEnum;
+use App\Domain\Toon\TagEnum;
 
 final class TeamRequirement implements RequirementInterface
 {
     private int $teamSize;
 
-    private ?ToonTagEnum $tag;
+    private ?TagEnum $tag;
 
     private int $minStar;
 
     private int $minGear;
 
-    public function __construct(int $teamSize, ?ToonTagEnum $tag = null, int $minStar = 0, int $minGear = 0)
+    public function __construct(int $teamSize, ?TagEnum $tag = null, int $minStar = 0, int $minGear = 0)
     {
         $this->teamSize = $teamSize;
         $this->tag = $tag;

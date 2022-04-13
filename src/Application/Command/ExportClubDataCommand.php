@@ -15,7 +15,7 @@ use App\Domain\Player\Player;
 use App\Domain\Toon\Toon;
 use App\Domain\Toon\ToonProgressProvider;
 use App\Domain\Toon\ToonProvider;
-use App\Domain\Toon\ToonTagEnum;
+use App\Domain\Toon\TagEnum;
 use PhpOffice\PhpSpreadsheet\NamedRange;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -206,17 +206,17 @@ class ExportClubDataCommand extends Command
     }
 
     /**
-     * @return array<int, ToonTagEnum>
+     * @return array<int, TagEnum>
      */
     private static function getToonTags(): array
     {
-        return ToonTagEnum::instances();
+        return TagEnum::instances();
     }
 
     /**
      * @return array<int, AbstractMode>
      */
-    private static function getGameModesToCheck(int $teamSize, ToonTagEnum $tag): array
+    private static function getGameModesToCheck(int $teamSize, TagEnum $tag): array
     {
         return [
             new Tier6($teamSize, $tag),

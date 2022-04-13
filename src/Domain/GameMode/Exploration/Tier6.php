@@ -6,11 +6,11 @@ namespace App\Domain\GameMode\Exploration;
 
 use App\Domain\GameMode\AbstractMode;
 use App\Domain\GameMode\TeamRequirement;
-use App\Domain\Toon\ToonTagEnum;
+use App\Domain\Toon\TagEnum;
 
 final class Tier6 extends AbstractMode
 {
-    public function __construct(int $teamSize, ?ToonTagEnum $tag = null)
+    public function __construct(int $teamSize, ?TagEnum $tag = null)
     {
         parent::__construct(new TeamRequirement($teamSize, $tag, 4, 5));
     }
