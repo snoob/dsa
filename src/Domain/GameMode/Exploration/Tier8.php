@@ -6,7 +6,7 @@ namespace App\Domain\GameMode\Exploration;
 
 use App\Domain\Toon\TagEnum;
 
-final class Tier7 extends AbstractExplorationMode
+final class Tier8 extends AbstractExplorationMode
 {
     public function __construct(int $teamSize, ?TagEnum $tag)
     {
@@ -15,6 +15,6 @@ final class Tier7 extends AbstractExplorationMode
 
     public function __toString(): string
     {
-        return 'P7';
+        return 'P8';
     }
 }

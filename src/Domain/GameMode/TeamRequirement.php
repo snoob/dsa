@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\GameMode;
 
 use App\Domain\Player\Player;
-use App\Domain\Toon\ToonProgress;
 use App\Domain\Toon\TagEnum;
+use App\Domain\Toon\ToonProgress;
 
 final class TeamRequirement implements RequirementInterface
 {
