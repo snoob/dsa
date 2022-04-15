@@ -20,7 +20,7 @@ final class ClubExport
     private array $gameModes;
 
     /**
-     * @var array<string, array<int, Player>>
+     * @var array<string, array<string, float>>
      */
     private array $playersEligibility;
 
@@ -61,8 +61,36 @@ final class ClubExport
         return $this->playersEligibility[\get_class($abstractMode)] ?? [];
     }
 
-    public function addEligiblePlayer(AbstractMode $abstractMode, Player $player): void
+    public function getEligiblePlayersLabel(AbstractMode $abstractMode): string
     {
-        $this->playersEligibility[\get_class($abstractMode)][] = $player;
+        $playerCount = 0;
+        $teamCount = 0;
+
+        foreach ($this->playersEligibility[\get_class($abstractMode)] ?? [] as $playerTeamCount) {
+            $teamCount += (int) $playerTeamCount;
+            ++$playerCount;
+        }
+
+        if ($teamCount === $playerCount) {
+            return (string) $playerCount;
+        }
+
+        return sprintf('%d (%d)', $playerCount, $teamCount);
+    }
+
+    public function addEligiblePlayer(AbstractMode $abstractMode, Player $player, float $teamCount): void
+    {
+        $this->playersEligibility[\get_class($abstractMode)][$player->getName()] = $teamCount;
+    }
+
+    public function getPlayerEligibilityLabel(AbstractMode $abstractMode, string $playerName): string
+    {
+        $teamCount = $this->playersEligibility[\get_class($abstractMode)][$playerName];
+
+        if ($teamCount < 2) {
+            return $playerName;
+        }
+
+        return sprintf('%s (%d)', $playerName, $teamCount);
     }
 }

@@ -82,11 +82,11 @@ final class AlexTheme extends DefaultTheme
         $conditionals[] = new Conditional();
         $conditionals[0]->setConditionType(Conditional::CONDITION_CELLIS);
         $conditionals[0]->setOperatorType(Conditional::OPERATOR_GREATERTHANOREQUAL);
-        $conditionals[0]->addCondition('1');
+        $conditionals[0]->addCondition('2');
         $conditionals[0]->getStyle()->applyFromArray([
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
-                'color' => ['rgb' => 'C6E0B4'],
+                'color' => ['rgb' => '7C9149'],
             ],
         ]);
         $conditionals[0]->setStopIfTrue(true);
@@ -94,14 +94,26 @@ final class AlexTheme extends DefaultTheme
         $conditionals[] = new Conditional();
         $conditionals[1]->setConditionType(Conditional::CONDITION_CELLIS);
         $conditionals[1]->setOperatorType(Conditional::OPERATOR_GREATERTHANOREQUAL);
-        $conditionals[1]->addCondition('0.5');
+        $conditionals[1]->addCondition('1');
         $conditionals[1]->getStyle()->applyFromArray([
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'C6E0B4'],
+            ],
+        ]);
+        $conditionals[1]->setStopIfTrue(true);
+
+        $conditionals[] = new Conditional();
+        $conditionals[2]->setConditionType(Conditional::CONDITION_CELLIS);
+        $conditionals[2]->setOperatorType(Conditional::OPERATOR_GREATERTHANOREQUAL);
+        $conditionals[2]->addCondition('0.5');
+        $conditionals[2]->getStyle()->applyFromArray([
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
                 'color' => ['rgb' => 'F5C142'],
             ],
         ]);
-        $conditionals[1]->setStopIfTrue(true);
+        $conditionals[2]->setStopIfTrue(true);
 
         foreach ($sheet->getParent()->getNamedRange('player_eligibility')->getCellsInRange() as $cell) {
             $sheet->getStyle($cell)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_PERCENTAGE);

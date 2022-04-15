@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Toon;
 
 use App\Domain\Common\AbstractProvider;
+use App\Domain\Player\Player;
 use Symfony\Contracts\Cache\ItemInterface;
 
 final class ToonProvider extends AbstractProvider
@@ -31,6 +32,11 @@ final class ToonProvider extends AbstractProvider
         });
     }
 
+    public function getTeamSizeByTag(TagEnum $tag): int
+    {
+        return min(\count($this->findByTag($tag)), Player::TEAM_SIZE);
+    }
+
     /**
      * @return array<int, Toon>
      */
@@ -38,12 +44,16 @@ final class ToonProvider extends AbstractProvider
     {
         return [
             new Toon('aladdin', [TagEnum::ALADDIN()]),
+            new Toon('ariel', [TagEnum::OCEANIC()]),
             new Toon('barley', [TagEnum::ADVENTURER(), TagEnum::ONWARD()]),
             new Toon('bo-peep', [TagEnum::ADVENTURER()]),
-            new Toon('captain-hook', [TagEnum::PETER_PAN()]),
+            new Toon('captain-gantu', [TagEnum::OCEANIC()]),
+            new Toon('captain-hook', [TagEnum::PETER_PAN(), TagEnum::OCEANIC()]),
+            new Toon('cobra-bubbles', [TagEnum::OCEANIC()]),
             new Toon('chip', [TagEnum::ADVENTURER()]),
             new Toon('dale', [TagEnum::ADVENTURER()]),
             new Toon('dash', [TagEnum::THE_INCREDIBLES()]),
+            new Toon('davy-jones', [TagEnum::OCEANIC()]),
             new Toon('demona', [TagEnum::GARGOYLES()]),
             new Toon('elastigirl', [TagEnum::THE_INCREDIBLES()]),
             new Toon('flynn-rider', [TagEnum::TANGLED()]),
@@ -54,26 +64,31 @@ final class ToonProvider extends AbstractProvider
             new Toon('goliath', [TagEnum::GARGOYLES()]),
             new Toon('ian', [TagEnum::ONWARD()]),
             new Toon('jack-jack', [TagEnum::THE_INCREDIBLES()]),
-            new Toon('jack-sparrow', [TagEnum::ADVENTURER()]),
+            new Toon('jack-sparrow', [TagEnum::ADVENTURER(), TagEnum::OCEANIC()]),
             new Toon('jafar', [TagEnum::ALADDIN()]),
             new Toon('jasmine', [TagEnum::ALADDIN()]),
-            new Toon('kida', [TagEnum::ATLANTIS()]),
+            //new Toon('kida', [TagEnum::ATLANTIS(), TagEnum::OCEANIC()]),
+            new Toon('king-triton', [TagEnum::OCEANIC()]),
             new Toon('lily-houghton', [TagEnum::ADVENTURER(), TagEnum::JUNGLE_CRUISE()]),
+            new Toon('maui', [TagEnum::OCEANIC()]),
             new Toon('maximus', [TagEnum::TANGLED()]),
-            new Toon('milo-thatch', [TagEnum::ADVENTURER(), TagEnum::ATLANTIS()]),
-            new Toon('moana', [TagEnum::ADVENTURER()]),
+            new Toon('milo-thatch', [TagEnum::ADVENTURER(), TagEnum::ATLANTIS(), TagEnum::OCEANIC()]),
+            new Toon('moana', [TagEnum::ADVENTURER(), TagEnum::OCEANIC()]),
             new Toon('monterey-jack', [TagEnum::ADVENTURER()]),
             new Toon('mother-gothel', [TagEnum::TANGLED()]),
             new Toon('mr-incredible', [TagEnum::THE_INCREDIBLES()]),
-            new Toon('peter-pan', [TagEnum::PETER_PAN()]),
+            new Toon('peter-pan', [TagEnum::PETER_PAN(), TagEnum::OCEANIC()]),
+            new Toon('prince-eric', [TagEnum::OCEANIC()]),
             new Toon('rapunzel', [TagEnum::TANGLED()]),
             new Toon('raya', [TagEnum::ADVENTURER()]),
-            new Toon('smee', [TagEnum::PETER_PAN()]),
+            new Toon('smee', [TagEnum::PETER_PAN(), TagEnum::OCEANIC()]),
+            new Toon('stitch', [TagEnum::OCEANIC()]),
             new Toon('syndrome', [TagEnum::THE_INCREDIBLES()]),
             new Toon('the-manticore', [TagEnum::ONWARD()]),
-            new Toon('tinker-bell', [TagEnum::PETER_PAN()]),
+            new Toon('tinker-bell', [TagEnum::PETER_PAN(), TagEnum::OCEANIC()]),
+            new Toon('ursula', [TagEnum::OCEANIC()]),
             new Toon('violet', [TagEnum::THE_INCREDIBLES()]),
-            new Toon('wendy', [TagEnum::PETER_PAN()]),
+            new Toon('wendy', [TagEnum::PETER_PAN(), TagEnum::OCEANIC()]),
             new Toon('xanatos', [TagEnum::GARGOYLES()]),
         ];
     }

@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace App\Domain\Club;
 
 use App\Application\Cache\CacheableInterface;
+use App\Domain\Club\Exception\PlayerAlreadyExistsException;
+use App\Domain\Club\Exception\PlayerNotExistsException;
 use App\Domain\Player\Player;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use JetBrains\PhpStorm\Pure;
 
 final class Club implements \Stringable, CacheableInterface
@@ -21,15 +25,12 @@ final class Club implements \Stringable, CacheableInterface
      */
     private array $players;
 
-    /**
-     * @param array<int, Player> $players
-     */
-    public function __construct(string $id, string $name, \DateTimeImmutable $lastUpdatedDate, array $players)
+    public function __construct(string $id, string $name, \DateTimeImmutable $lastUpdatedDate)
     {
         $this->id = $id;
         $this->name = $name;
         $this->lastUpdatedDate = $lastUpdatedDate;
-        $this->players = $players;
+        $this->players = [];
     }
 
     #[Pure]
@@ -61,8 +62,44 @@ final class Club implements \Stringable, CacheableInterface
         return $this->players;
     }
 
+    public function addPlayer(Player $player): void
+    {
+        try {
+            $this->getPlayerIndex($player);
+        } catch (PlayerNotExistsException) {
+            $this->players[] = $player;
+
+            return;
+        }
+
+        throw new PlayerAlreadyExistsException($player);
+    }
+
+    public function removePlayer(Player $player): void
+    {
+        unset($this->players[$this->getPlayerIndex($player)]);
+    }
+
+    public function sortPlayers(): void
+    {
+        $collection = new ArrayCollection($this->players);
+
+        $this->players = $collection->matching(Criteria::create()->orderBy(['name' => Criteria::ASC]))->toArray();
+    }
+
     public static function generateCacheKey(string $id): string
     {
         return sprintf('club.%s', $id);
+    }
+
+    private function getPlayerIndex(Player $playerToFind): int
+    {
+        foreach ($this->players as $index => $player) {
+            if ($player->equals($playerToFind)) {
+                return $index;
+            }
+        }
+
+        throw new PlayerNotExistsException($playerToFind);
     }
 }

@@ -15,7 +15,9 @@ return (new PhpCsFixer\Config())
         '@PHP74Migration:risky' => true,
         'concat_space' => ['spacing' => 'one'],
         'comment_to_phpdoc' => false,
-        'ordered_class_elements' => ['sort_algorithm' => 'none']
+        'ordered_class_elements' => ['sort_algorithm' => 'none'],
+        'self_accessor' => false,
+        'single_line_comment_spacing' => false
     ])
     ->setFinder($finder)
 ;

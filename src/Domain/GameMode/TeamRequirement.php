@@ -19,6 +19,7 @@ final class TeamRequirement implements RequirementInterface
 
     private int $minGear;
 
+    //@TODO make teamsize resolvable from tag
     public function __construct(int $teamSize, ?TagEnum $tag = null, int $minStar = 0, int $minGear = 0)
     {
         $this->teamSize = $teamSize;
@@ -27,6 +28,7 @@ final class TeamRequirement implements RequirementInterface
         $this->minGear = $minGear;
     }
 
+    #[Pure]
     public function isPlayerEligible(Player $player): float
     {
         $toons = null !== $this->tag ? $this->buildToonMap($player)[$this->tag->getValue()] ?? [] : $player->getToons();
@@ -44,7 +46,7 @@ final class TeamRequirement implements RequirementInterface
     #[Pure]
     public function isToonEligible(ToonProgress $toonProgress): bool
     {
-        // @TODO add tag check later when toons will be not pre-filtered
+        //@TODO add tag check later when toons will be not pre-filtered
         return $toonProgress->getStar() >= $this->minStar && $toonProgress->getGear() >= $this->minGear;
     }
 
@@ -54,7 +56,7 @@ final class TeamRequirement implements RequirementInterface
     #[Pure]
     private function buildToonMap(Player $player): array
     {
-        // @TODO array_filter
+        //@TODO array_filter
         $toonMap = [];
 
         foreach ($player->getToons() as $toonProgress) {

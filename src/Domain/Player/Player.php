@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domain\Player;
 
+use App\Application\Cache\CacheableInterface;
 use App\Domain\Toon\ToonProgress;
+use JetBrains\PhpStorm\Pure;
 
-final class Player implements \Stringable
+final class Player implements \Stringable, CacheableInterface
 {
+    public const TEAM_SIZE = 5;
+
     private string $id;
 
     private string $name;
@@ -58,5 +62,26 @@ final class Player implements \Stringable
     public function addToon(ToonProgress $toonProgress): void
     {
         $this->toons[$toonProgress->getToon()->getId()] = $toonProgress;
+    }
+
+    #[Pure]
+    public function equals(Player $player): bool
+    {
+        return $this->id === $player->getId();
+    }
+
+    /**
+     * @TODO unused for now we need to implement cache tag strategy
+     *
+     * @return array<int, string>
+     */
+    public static function getCacheTags(string $id): array
+    {
+        return ['player', sprintf('player.%s', $id)];
+    }
+
+    public static function generateCacheKey(string $id): string
+    {
+        return sprintf('player.%s', $id);
     }
 }
