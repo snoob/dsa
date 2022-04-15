@@ -302,7 +302,7 @@ class ExportClubDataCommand extends Command
     {
         $sheet->getCell($coordinate)->getHyperlink()->setUrl(
             $this->urlGenerator->generate(
-                sprintf('dsa_%s', $route),
+                sprintf('dsa_fan_%s', $route),
                 $parameters,
                 UrlGeneratorInterface::ABSOLUTE_URL
             )

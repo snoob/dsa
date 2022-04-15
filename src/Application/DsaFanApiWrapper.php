@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class DsaApiWrapper
+final class DsaFanApiWrapper
 {
     private HttpClientInterface $httpClient;
 
@@ -43,7 +43,7 @@ final class DsaApiWrapper
 
     public function getToonProgress(Player $player, Toon $toon): ToonProgress
     {
-        $response = $this->httpClient->request(Request::METHOD_GET, $this->urlGenerator->generate('dsa_toon_progress', ['id' => $toon->getId(), 'playerId' => $player->getId()]));
+        $response = $this->httpClient->request(Request::METHOD_GET, $this->urlGenerator->generate('dsa_fan_toon_progress', ['id' => $toon->getId(), 'playerId' => $player->getId()]));
 
         try {
             $crawler = (new Crawler($response->getContent()))->filter('.dsa-character-card ');
@@ -83,7 +83,7 @@ final class DsaApiWrapper
 
     public function getPlayer(string $playerId): ?Player
     {
-        $response = $this->httpClient->request(Request::METHOD_GET, $this->urlGenerator->generate('dsa_player', ['id' => $playerId]));
+        $response = $this->httpClient->request(Request::METHOD_GET, $this->urlGenerator->generate('dsa_fan_player', ['id' => $playerId]));
 
         try {
             $crawler = (new Crawler($response->getContent()));
@@ -102,7 +102,7 @@ final class DsaApiWrapper
 
     private function getClubCrawler(string $clubId): ?Crawler
     {
-        $response = $this->httpClient->request(Request::METHOD_GET, $this->urlGenerator->generate('dsa_club', ['id' => $clubId]));
+        $response = $this->httpClient->request(Request::METHOD_GET, $this->urlGenerator->generate('dsa_fan_club', ['id' => $clubId]));
 
         try {
             return new Crawler($response->getContent());

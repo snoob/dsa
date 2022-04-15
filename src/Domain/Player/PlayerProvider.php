@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Player;
 
-use App\Application\DsaApiWrapper;
+use App\Application\DsaFanApiWrapper;
 use App\Domain\Club\Club;
 use App\Domain\Common\AbstractProvider;
 use JetBrains\PhpStorm\Pure;
@@ -13,13 +13,13 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 final class PlayerProvider extends AbstractProvider
 {
-    private DsaApiWrapper $dsaApiWrapper;
+    private DsaFanApiWrapper $DsaFanApiWrapper;
 
     #[Pure]
-    public function __construct(TagAwareCacheInterface $cache, DsaApiWrapper $dsaApiWrapper)
+    public function __construct(TagAwareCacheInterface $cache, DsaFanApiWrapper $DsaFanApiWrapper)
     {
         parent::__construct($cache);
-        $this->dsaApiWrapper = $dsaApiWrapper;
+        $this->DsaFanApiWrapper = $DsaFanApiWrapper;
         $this->cache = $cache;
     }
 
@@ -30,7 +30,7 @@ final class PlayerProvider extends AbstractProvider
     {
         $players = [];
 
-        foreach ($this->dsaApiWrapper->getClubPlayerIds($club) as $playerId) {
+        foreach ($this->DsaFanApiWrapper->getClubPlayerIds($club) as $playerId) {
             $players[$playerId] = $this->find($playerId);
         }
 
@@ -42,7 +42,7 @@ final class PlayerProvider extends AbstractProvider
         return $this->cache->get(Player::generateCacheKey($id), function (ItemInterface $item) use ($id) {
             $item->expiresAt(new \DateTime('+' . static::CACHE_EXPIRATION));
 
-            return $this->dsaApiWrapper->getPlayer($id);
+            return $this->DsaFanApiWrapper->getPlayer($id);
         });
     }
 }
