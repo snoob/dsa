@@ -7,6 +7,7 @@ namespace App\Domain\GameMode;
 use App\Domain\Player\Player;
 use App\Domain\Toon\TagEnum;
 use App\Domain\Toon\ToonProgress;
+use JetBrains\PhpStorm\Pure;
 
 final class TeamRequirement implements RequirementInterface
 {
@@ -40,6 +41,7 @@ final class TeamRequirement implements RequirementInterface
         return $eligibleToons / $this->teamSize;
     }
 
+    #[Pure]
     public function isToonEligible(ToonProgress $toonProgress): bool
     {
         // @TODO add tag check later when toons will be not pre-filtered
@@ -49,6 +51,7 @@ final class TeamRequirement implements RequirementInterface
     /**
      * @return array<string, array<int, ToonProgress>>
      */
+    #[Pure]
     private function buildToonMap(Player $player): array
     {
         // @TODO array_filter

@@ -6,6 +6,7 @@ namespace App\Domain\Club;
 
 use App\Application\DsaApiWrapper;
 use App\Domain\Common\AbstractProvider;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
@@ -13,6 +14,7 @@ final class ClubProvider extends AbstractProvider
 {
     private DsaApiWrapper $dsaApiWrapper;
 
+    #[Pure]
     public function __construct(TagAwareCacheInterface $cache, DsaApiWrapper $dsaApiWrapper)
     {
         parent::__construct($cache);

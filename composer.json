@@ -12,7 +12,7 @@
         "doctrine/annotations": "^1.13",
         "doctrine/collections": "^1.6",
         "elao/enum": "^1.17",
-        "phpoffice/phpspreadsheet": "dev-master",
+        "phpoffice/phpspreadsheet": "^1.22",
         "symfony/console": "^6.0",
         "symfony/css-selector": "^6.0",
         "symfony/dom-crawler": "^6.0",

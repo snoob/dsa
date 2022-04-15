@@ -6,6 +6,7 @@ namespace App\Domain\Club;
 
 use App\Application\Cache\CacheableInterface;
 use App\Domain\Player\Player;
+use JetBrains\PhpStorm\Pure;
 
 final class Club implements \Stringable, CacheableInterface
 {
@@ -31,6 +32,7 @@ final class Club implements \Stringable, CacheableInterface
         $this->players = $players;
     }
 
+    #[Pure]
     public function __toString(): string
     {
         return ucfirst($this->getName());
