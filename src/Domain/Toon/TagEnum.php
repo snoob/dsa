@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Toon;
 
-use App\Domain\Common\CacheableInterface;
-use App\Domain\Common\TranslatableInterface;
-use App\Domain\Common\Translator;
+use App\Application\Cache\CacheableInterface;
+use App\Application\Translation\TranslatableInterface;
+use App\Application\Translation\Translator;
 use Elao\Enum\AutoDiscoveredValuesTrait;
 use Elao\Enum\Enum;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
@@ -54,11 +55,18 @@ final class TagEnum extends Enum implements CacheableInterface, TranslatableInte
         return (new AsciiSlugger())->slug($translator->trans($this))->lower()->toString();
     }
 
+    #[Pure]
     public function getCacheKey(): string
     {
-        return sprintf('toon.%s', $this->value);
+        return self::generateCacheKey($this->value);
     }
 
+    public static function generateCacheKey(string $id): string
+    {
+        return sprintf('toon.%s', $id);
+    }
+
+    #[Pure]
     public function getTranslationKey(): string
     {
         return sprintf('toon.category.%s', $this->getValue());

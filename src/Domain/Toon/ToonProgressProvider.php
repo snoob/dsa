@@ -22,8 +22,9 @@ final class ToonProgressProvider extends AbstractProvider
 
     public function find(Player $player, Toon $toon): ToonProgress
     {
-        $toonProgress = $this->cache->get(sprintf('player.%s.toon.%s', $player->getId(), $toon->getId()), function (ItemInterface $item) use ($player, $toon) {
-            $item->tag(['player', 'player.%s']);
+        $cacheId = ToonProgress::generateCacheId($player, $toon);
+
+        $toonProgress = $this->cache->get(ToonProgress::generateCacheKey($cacheId), function (ItemInterface $item) use ($player, $toon) {
             $item->expiresAt(new \DateTime('+' . static::CACHE_EXPIRATION));
 
             return $this->dsaApiWrapper->getToonProgress($player, $toon);

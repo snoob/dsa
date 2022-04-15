@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Toon;
 
-use App\Domain\Common\CacheableInterface;
+use App\Application\Cache\CacheableInterface;
 use App\Domain\Player\Player;
+use JetBrains\PhpStorm\Pure;
 
 final class ToonProgress implements CacheableInterface
 {
@@ -45,13 +46,19 @@ final class ToonProgress implements CacheableInterface
         return $this->gear;
     }
 
-    public function getCacheKey(): string
+    #[Pure]
+    public static function generateCacheId(Player $player, Toon $toon): string
     {
-        return sprintf('player.%s.toon.%s', $this->player->getId(), $this->toon->getId());
+        return sprintf('%s-%s', $player->getId(), $toon->getId());
     }
 
     public function isUnlocked(): bool
     {
         return $this->star > 0;
+    }
+
+    public static function generateCacheKey(string $id): string
+    {
+        return sprintf('toon_progress.%s', $id);
     }
 }

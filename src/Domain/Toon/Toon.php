@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Toon;
 
-use App\Domain\Common\TranslatableInterface;
+use App\Application\Translation\TranslatableInterface;
+use JetBrains\PhpStorm\Pure;
 
 final class Toon implements TranslatableInterface, \Stringable
 {
@@ -44,6 +45,7 @@ final class Toon implements TranslatableInterface, \Stringable
         return $this->tags;
     }
 
+    #[Pure]
     public function getTranslationKey(): string
     {
         return sprintf('toon.name.%s', $this->getId());

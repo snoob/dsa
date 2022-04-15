@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Common;
+namespace App\Application\String;
 
 use function Symfony\Component\String\u;
 

@@ -22,7 +22,7 @@ final class ClubProvider extends AbstractProvider
 
     public function find(string $id): ?Club
     {
-        return $this->cache->get(sprintf('club.%s', $id), function (ItemInterface $item) use ($id) {
+        return $this->cache->get(Club::generateCacheKey($id), function (ItemInterface $item) use ($id) {
             $item->tag('club');
             $item->expiresAt(new \DateTime('+' . static::CACHE_EXPIRATION));
 

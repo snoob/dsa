@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Application\Command;
 
 use App\Application\Spreadsheet\AlexTheme;
+use App\Application\Translation\Translator;
 use App\Domain\Club\ClubExport;
 use App\Domain\Club\ClubProvider;
-use App\Domain\Common\Translator;
 use App\Domain\GameMode\AbstractMode;
 use App\Domain\GameMode\Exploration\Tier6;
 use App\Domain\GameMode\Exploration\Tier7;

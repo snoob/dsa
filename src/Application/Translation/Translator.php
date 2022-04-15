@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Common;
+namespace App\Application\Translation;
 
+use App\Application\String\StringUtil;
 use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface as SymfonyTranslatorInterface;
 

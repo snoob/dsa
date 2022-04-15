@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Club;
 
+use App\Application\Cache\CacheableInterface;
 use App\Domain\Player\Player;
 
-final class Club implements \Stringable
+final class Club implements \Stringable, CacheableInterface
 {
     private string $id;
 
@@ -56,5 +57,10 @@ final class Club implements \Stringable
     public function getPlayers(): array
     {
         return $this->players;
+    }
+
+    public static function generateCacheKey(string $id): string
+    {
+        return sprintf('club.%s', $id);
     }
 }

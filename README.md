@@ -40,8 +40,6 @@ task install
 echo "CLUB_ID=YOUR_CLUB_TOKEN" >> .env.local
 ```
 
-
-
 You are done !
 
 ## Export data

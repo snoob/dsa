@@ -56,6 +56,9 @@
             ".php-cs-fixer.dist.php"
         ]
     },
+    "jetbrains/phpstorm-attributes": {
+        "version": "1.0"
+    },
     "maennchen/zipstream-php": {
         "version": "2.1.0"
     },
