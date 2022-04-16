@@ -46,15 +46,20 @@ final class ToonProgress implements CacheableInterface
         return $this->gear;
     }
 
+    public function isUnlocked(): bool
+    {
+        return $this->star > 0;
+    }
+
+    public function getScore(): int
+    {
+        return $this->star * 10 + $this->gear;
+    }
+
     #[Pure]
     public static function generateCacheId(Player $player, Toon $toon): string
     {
         return sprintf('%s-%s', $player->getId(), $toon->getId());
-    }
-
-    public function isUnlocked(): bool
-    {
-        return $this->star > 0;
     }
 
     public static function generateCacheKey(string $id): string

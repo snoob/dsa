@@ -12,17 +12,12 @@ use Elao\Enum\Enum;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
+//TODO merge Category and MovieEnum
+//@TODO auto resolve la team size depuis le toonProvider = transformer gettoons en mode static
+
 /**
- * @method static self ADVENTURER()
- * @method static self ALADDIN()
- * @method static self ATLANTIS()
- * @method static self GARGOYLES()
- * @method static self JUNGLE_CRUISE()
- * @method static self ONWARD()
- * @method static self OCEANIC()
- * @method static self PETER_PAN()
- * @method static self TANGLED()
- * @method static self THE_INCREDIBLES()
+ * @mixin CategoryTagEnum
+ * @mixin MovieTagEnum
  */
 final class TagEnum extends Enum implements CacheableInterface, TranslatableInterface
 {
