@@ -47,3 +47,10 @@ You are done !
 ```
 task start
 ```
+
+Next step :
+- cs fixer : fixer trailing array 
+- Php 8.1 in symfony with annotation
+- Php config
+- Cache memory problem
+- Native enum and rector

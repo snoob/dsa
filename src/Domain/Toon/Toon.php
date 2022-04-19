@@ -14,7 +14,7 @@ final class Toon implements TranslatableInterface, \Stringable
     /**
      * @var array<string, TagEnum>
      */
-    private array $tags;
+    private array $tags = [];
 
     /**
      * @param array<int, TagEnum> $tags
