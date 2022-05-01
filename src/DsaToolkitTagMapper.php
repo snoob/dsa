@@ -12,6 +12,8 @@ final class DsaToolkitTagMapper
         switch ($tagId) {
             case 'ATLANTIS: THE LOST EMPIRE':
                 return TagEnum::ATLANTIS();
+            case 'SORCERER\'S CHOSEN: SIEGE ON OLYMPUS':
+                return TagEnum::CHOSEN();
             default:
                 return TagEnum::get(StringUtil::slugify($tagId));
         }

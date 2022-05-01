@@ -52,6 +52,10 @@ final class DsaToolkit
             $toons[] = new Toon(StringUtil::slugify($node->getAttribute('title')), $tags);
         }
 
+        usort($toons, static function (Toon $toon1, Toon $toon2) {
+            return $toon1->getId() <=> $toon2->getId();
+        });
+
         return $toons;
     }
 

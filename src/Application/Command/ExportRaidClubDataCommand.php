@@ -37,10 +37,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 #[AsCommand(
-    name: 'app:export:club',
-    description: 'Export your club players data.',
+    name: 'app:export:club:raid',
+    description: 'Export your raid club players data.',
 )]
-class ExportClubDataCommand extends Command
+class ExportRaidClubDataCommand extends Command
 {
     private const DATE_FORMAT = 'd/m H:i';
 

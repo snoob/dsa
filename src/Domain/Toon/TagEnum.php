@@ -16,6 +16,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  * @method static self ADVENTURER()
  * @method static self ALADDIN()
  * @method static self ATLANTIS()
+ * @method static self CHOSEN()
  * @method static self GARGOYLES()
  * @method static self JUNGLE_CRUISE()
  * @method static self ONWARD()
@@ -33,6 +34,8 @@ final class TagEnum extends Enum implements CacheableInterface, TranslatableInte
     public const ALADDIN = 'aladdin';
 
     public const ATLANTIS = 'atlantis';
+
+    public const CHOSEN = 'chosen';
 
     public const GARGOYLES = 'gargoyles';
 
