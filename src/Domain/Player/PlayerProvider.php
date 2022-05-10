@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Player;
 
-use App\Application\DsaFanApiWrapper;
+use App\Application\Http\DsaFanApiWrapper;
 use App\Domain\Club\Club;
 use App\Domain\Common\AbstractProvider;
 use JetBrains\PhpStorm\Pure;

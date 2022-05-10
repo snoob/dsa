@@ -16,16 +16,19 @@ final class Toon implements TranslatableInterface, \Stringable
      */
     private array $tags;
 
+    private int $speed;
+
     /**
      * @param array<int, TagEnum> $tags
      */
     #[Pure]
-    public function __construct(string $id, array $tags)
+    public function __construct(string $id, array $tags, int $speed)
     {
         $this->id = $id;
         foreach ($tags as $tag) {
             $this->tags[$tag->getValue()] = $tag;
         }
+        $this->speed = $speed;
     }
 
     public function __toString(): string
@@ -44,6 +47,11 @@ final class Toon implements TranslatableInterface, \Stringable
     public function getTags(): array
     {
         return $this->tags;
+    }
+
+    public function getSpeed(): int
+    {
+        return $this->speed;
     }
 
     #[Pure]

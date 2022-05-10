@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Application;
+namespace App\Application\Http;
 
 use App\Domain\Club\Club;
 use App\Domain\Player\Player;
+use App\Domain\Toon\TagEnum;
 use App\Domain\Toon\Toon;
 use App\Domain\Toon\ToonProgress;
+use Elao\Enum\Exception\InvalidValueException;
+use PhpCsFixer\DocBlock\Tag;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -97,6 +100,30 @@ final class DsaFanApiWrapper
             $playerId,
             ucfirst($matches[1]),
             new \DateTimeImmutable($crawler->filter('[data-datetime]')->attr('data-datetime'))
+        );
+    }
+
+    public function getToon(string $toonId): ?Toon
+    {
+        $response = $this->httpClient->request(Request::METHOD_GET, $this->urlGenerator->generate('dsa_fan_toon', ['id' => $toonId]));
+
+        try {
+            $crawler = (new Crawler($response->getContent()));
+        } catch (HttpExceptionInterface $exception) {
+            return null;
+        }
+
+        $tags = [];
+        foreach ($crawler->filter('.dsa-character-categories__category')->getIterator() as $node) {
+            try {
+                $tags[] = TagEnum::get($node->textContent);
+            } catch (InvalidValueException) {}
+        }
+
+        return new Toon(
+            $toonId,
+            $tags,
+            (int) $crawler->filter('.dsa-stat-list__stat-label:contains(\'Speed\')')->siblings()->filter('.dsa-stat-list__stat-value')->innerText()
         );
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Toon;
 
-use App\Application\DsaFanApiWrapper;
+use App\Application\Http\DsaFanApiWrapper;
 use App\Domain\Common\AbstractProvider;
 use App\Domain\Player\Player;
 use JetBrains\PhpStorm\Pure;

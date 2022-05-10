@@ -4,6 +4,9 @@ club:
 player:
     path: '/players/{id}'
 
+toon:
+    path: '/characters/{id}'
+
 toon_list:
     path: '/characters'
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Club;
 
-use App\Application\DsaFanApiWrapper;
+use App\Application\Http\DsaFanApiWrapper;
 use App\Domain\Common\AbstractProvider;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Contracts\Cache\ItemInterface;
