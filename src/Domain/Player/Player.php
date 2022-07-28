@@ -64,6 +64,11 @@ final class Player implements \Stringable, CacheableInterface
         $this->toons[$toonProgress->getToon()->getId()] = $toonProgress;
     }
 
+    public function getTeamBuilderLink(): string
+    {
+        return sprintf('https://script.google.com/macros/s/AKfycbw7csLy2GMHaKaP69CbzOwBGyW7fyrr8wbYZBvMzd8bvvnREB4cR7ifi_wcmTJ-F8I/exec?playerID=%s', $this->id);
+    }
+
     #[Pure]
     public function equals(Player $player): bool
     {

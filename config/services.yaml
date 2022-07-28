@@ -32,3 +32,10 @@ services:
             string $exportDir: '%env(EXPORT_DIR)%'
             array $extraPlayersToFetch: "%env(json:EXTRA_PLAYERS_TO_FETCH)%"
             array $extraPlayersToIgnore: "%env(json:EXTRA_PLAYERS_TO_IGNORE)%"
+
+    App\Application\Command\ExportTeamBuilderCommand:
+        bind:
+            string $clubId: '%env(CLUB_ID)%'
+            string $exportDir: '%env(EXPORT_DIR)%'
+            array $extraPlayersToFetch: "%env(json:EXTRA_PLAYERS_TO_FETCH)%"
+            array $extraPlayersToIgnore: "%env(json:EXTRA_PLAYERS_TO_IGNORE)%"
