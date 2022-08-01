@@ -2,40 +2,26 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Command;
+namespace App\Application\Command\Club;
 
-use App\Application\Translation\Translator;
+use App\Application\Command\CommandOutputStyle;
 use App\Domain\Club\Club;
 use App\Domain\Club\ClubProvider;
 use App\Domain\Club\Exception\PlayerAlreadyExistsException;
 use App\Domain\Club\Exception\PlayerNotExistsException;
 use App\Domain\Player\Player;
 use App\Domain\Player\PlayerProvider;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Stopwatch\Stopwatch;
 
-#[AsCommand(
-    name: 'app:export:team-builder',
-    description: 'Export your club players data.',
-)]
-final class ExportTeamBuilderCommand extends Command
+abstract class AbstractExportClubCommand extends Command
 {
+    protected string $exportDir;
     private ClubProvider $clubProvider;
 
     private PlayerProvider $playerProvider;
 
-    private Translator $translator;
-
     private string $clubId;
-
-    private string $exportDir;
 
     /**
      * @var array<int, string>
@@ -54,7 +40,6 @@ final class ExportTeamBuilderCommand extends Command
     public function __construct(
         ClubProvider $clubProvider,
         PlayerProvider $playerProvider,
-        Translator $translator,
         string $clubId,
         string $exportDir,
         array $extraPlayersToFetch,
@@ -63,19 +48,14 @@ final class ExportTeamBuilderCommand extends Command
         parent::__construct();
         $this->clubProvider = $clubProvider;
         $this->playerProvider = $playerProvider;
-        $this->translator = $translator;
         $this->clubId = $clubId;
         $this->exportDir = $exportDir;
         $this->extraPlayersToFetch = $extraPlayersToFetch;
         $this->extraPlayersToIgnore = $extraPlayersToIgnore;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function getClub(CommandOutputStyle $commandOutputStyle): Club
     {
-        $commandOutputStyle = new CommandOutputStyle($input, $output);
-        $stopwatch = new Stopwatch(true);
-        $stopwatch->start($this->getName());
-
         $club = $this->clubProvider->find($this->clubId);
 
         if (null === $club) {
@@ -119,31 +99,7 @@ final class ExportTeamBuilderCommand extends Command
 
         $club->sortPlayers();
 
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $this->appendHeaderRows($sheet);
-        $this->appendContent($sheet, $club);
-
-        $xlsx = new Xlsx($spreadsheet);
-        $filePath = sprintf('%s/%s.xlsx', $this->exportDir, 'team-builder');
-        $xlsx->save($filePath);
-        $output->writeln(sprintf('%s written in %d sec', $filePath, $stopwatch->getEvent($this->getName())->getDuration() / 1000));
-        $output->writeln(sprintf('Memory usage %d MB', $stopwatch->getEvent($this->getName())->getMemory() / 1024 / 1024));
-
-        return Command::SUCCESS;
-    }
-
-    private function appendHeaderRows(Worksheet $sheet): void
-    {
-        $sheet->fromArray($this->getTranslatedHeaders(['Joueur', 'Lien']));
-    }
-
-    private function appendContent(Worksheet $sheet, Club $club): void
-    {
-        foreach ($club->getPlayers() as $player) {
-            $currentRow = $sheet->getHighestRow() + 1;
-            $sheet->fromArray([$player->getName(), $player->getTeamBuilderLink()], null, 'A' . $currentRow);
-        }
+        return $club;
     }
 
     private function getPlayer(CommandOutputStyle $commandOutputStyle, string $playerId, string $extraMessage): ?Player
@@ -155,21 +111,5 @@ final class ExportTeamBuilderCommand extends Command
         }
 
         return $player;
-    }
-
-    /**
-     * @param array<int, string> $headers
-     *
-     * @return array<int, string>
-     */
-    private function getTranslatedHeaders(array $headers): array
-    {
-        $translatedHeaders = [];
-
-        foreach ($headers as $header) {
-            $translatedHeaders[] = $this->translator->trans(sprintf('column.%s', $header));
-        }
-
-        return $translatedHeaders;
     }
 }

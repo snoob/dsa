@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Command;
+namespace App\Application\Command\Club;
 
+use App\Application\Command\CommandOutputStyle;
 use App\Application\Spreadsheet\AlexTheme;
 use App\Application\Translation\Translator;
 use App\Domain\Club\ClubExport;
 use App\Domain\Club\ClubProvider;
-use App\Domain\Club\Exception\PlayerAlreadyExistsException;
-use App\Domain\Club\Exception\PlayerNotExistsException;
 use App\Domain\GameMode\AbstractMode;
 use App\Domain\GameMode\Exploration\Tier8;
 use App\Domain\GameMode\Exploration\Tier9;
@@ -35,16 +34,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 #[AsCommand(
-    name: 'app:export:club',
-    description: 'Export your club players data.',
+    name: 'club:export:expedition',
+    description: 'Export expedition club data.',
 )]
-class ExportClubDataCommand extends Command
+final class ExportClubExpeditionCommand extends AbstractExportClubCommand
 {
     private const DATE_FORMAT = 'd/m H:i';
-
-    private ClubProvider $clubProvider;
-
-    private PlayerProvider $playerProvider;
 
     private ToonProvider $toonProvider;
 
@@ -54,47 +49,33 @@ class ExportClubDataCommand extends Command
 
     private UrlGeneratorInterface $urlGenerator;
 
-    private string $clubId;
-
-    private string $exportDir;
-
     /**
-     * @var array<int, string>
-     */
-    private array $extraPlayersToFetch;
-
-    /**
-     * @var array<int, string>
-     */
-    private array $extraPlayersToIgnore;
-
-    /**
-     * @param array<int, string> $extraPlayersToFetch
-     * @param array<int, string> $extraPlayersToIgnore
+     * {@inheritdoc}
      */
     public function __construct(
         ClubProvider $clubProvider,
         PlayerProvider $playerProvider,
+        string $clubId,
+        string $exportDir,
+        array $extraPlayersToFetch,
+        array $extraPlayersToIgnore,
         ToonProvider $toonProvider,
         ToonProgressProvider $toonProgressProvider,
         Translator $translator,
         UrlGeneratorInterface $urlGenerator,
-        string $clubId,
-        string $exportDir,
-        array $extraPlayersToFetch,
-        array $extraPlayersToIgnore
     ) {
-        parent::__construct();
-        $this->clubProvider = $clubProvider;
-        $this->playerProvider = $playerProvider;
+        parent::__construct(
+            $clubProvider,
+            $playerProvider,
+            $clubId,
+            $exportDir,
+            $extraPlayersToFetch,
+            $extraPlayersToIgnore
+        );
         $this->toonProvider = $toonProvider;
         $this->toonProgressProvider = $toonProgressProvider;
         $this->translator = $translator;
         $this->urlGenerator = $urlGenerator;
-        $this->clubId = $clubId;
-        $this->exportDir = $exportDir;
-        $this->extraPlayersToFetch = $extraPlayersToFetch;
-        $this->extraPlayersToIgnore = $extraPlayersToIgnore;
     }
 
     protected function configure(): void
@@ -108,49 +89,6 @@ class ExportClubDataCommand extends Command
         $commandOutputStyle = new CommandOutputStyle($input, $output);
         $stopwatch = new Stopwatch(true);
 
-        $club = $this->clubProvider->find($this->clubId);
-
-        if (null === $club) {
-            throw new InvalidArgumentException(sprintf('Club with id %s not found.', $this->clubId));
-        }
-
-        foreach ($this->playerProvider->findByClub($club) as $playerId => $player) {
-            if (null === $player) {
-                $commandOutputStyle->playerNotFound($playerId, 'Id was crawled from club page');
-
-                continue;
-            }
-            $club->addPlayer($player);
-        }
-
-        foreach ($this->extraPlayersToFetch as $playerId) {
-            $player = $this->getPlayer($commandOutputStyle, $playerId, 'You can remove it from EXTRA_PLAYERS_TO_FETCH ENV variable');
-            if (null === $player) {
-                continue;
-            }
-
-            try {
-                $club->addPlayer($player);
-            } catch (PlayerAlreadyExistsException $exception) {
-                $commandOutputStyle->warning(sprintf('%s : You can remove it from EXTRA_PLAYERS_TO_FETCH ENV variable', $exception->getMessage()));
-            }
-        }
-
-        foreach ($this->extraPlayersToIgnore as $playerId) {
-            $player = $this->getPlayer($commandOutputStyle, $playerId, 'You can remove it from EXTRA_PLAYERS_TO_IGNORE ENV variable');
-            if (null === $player) {
-                continue;
-            }
-
-            try {
-                $club->removePlayer($player);
-            } catch (PlayerNotExistsException $exception) {
-                $commandOutputStyle->warning(sprintf('%s : You can remove it from EXTRA_PLAYERS_TO_IGNORE ENV variable', $exception->getMessage()));
-            }
-        }
-
-        $club->sortPlayers();
-
         try {
             $tag = TagEnum::get($input->getArgument('tag'));
         } catch (InvalidValueException $exception) {
@@ -160,7 +98,7 @@ class ExportClubDataCommand extends Command
         $stopwatch->start($tag->getValue());
         $toons = $this->toonProvider->findByTag($tag);
         $gameModes = self::getGameModesToCheck($this->toonProvider->getTeamSizeByTag($tag), $tag);
-        $clubExport = new ClubExport($club, $tag, $gameModes);
+        $clubExport = new ClubExport($this->getClub($commandOutputStyle), $tag, $gameModes);
         $spreadsheet = new Spreadsheet();
 
         $sheet = $spreadsheet->getActiveSheet();
@@ -307,17 +245,6 @@ class ExportClubDataCommand extends Command
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
         );
-    }
-
-    private function getPlayer(CommandOutputStyle $commandOutputStyle, string $playerId, string $extraMessage): ?Player
-    {
-        $player = $this->playerProvider->find($playerId);
-
-        if (null === $player) {
-            $commandOutputStyle->playerNotFound($playerId, $extraMessage);
-        }
-
-        return $player;
     }
 
     /**
