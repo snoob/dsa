@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Spreadsheet;
 
-use PhpOffice\PhpSpreadsheet\Shared\Font;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -19,7 +18,6 @@ final class AlexTheme extends DefaultTheme
     {
         $sheet = $spreadsheet->getActiveSheet();
 
-        $spreadsheet->getDefaultStyle()->getFont()->setName($this->getFontName(Font::GEORGIA));
         $spreadsheet->getDefaultStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $spreadsheet->getDefaultStyle()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
         $sheet->getRowDimension(1)->setRowHeight(27);

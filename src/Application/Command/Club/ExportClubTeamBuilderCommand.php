@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Command\Club;
 
 use App\Application\Command\CommandOutputStyle;
+use App\Application\Spreadsheet\DefaultTheme;
 use App\Domain\Club\Club;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -32,6 +33,9 @@ final class ExportClubTeamBuilderCommand extends AbstractExportClubCommand
         $this->appendHeaderRows($sheet);
         $this->appendContent($sheet, $this->getClub($commandOutputStyle));
 
+        $theme = new DefaultTheme();
+        $theme->applyTheme($spreadsheet);
+
         $xlsx = new Xlsx($spreadsheet);
         $filePath = sprintf('%s/%s.xlsx', $this->exportDir, 'team-builder');
         $xlsx->save($filePath);
@@ -43,7 +47,7 @@ final class ExportClubTeamBuilderCommand extends AbstractExportClubCommand
 
     private function appendHeaderRows(Worksheet $sheet): void
     {
-        $sheet->fromArray(['Joueur', 'Lien']);
+        $sheet->fromArray(['', '']);
     }
 
     private function appendContent(Worksheet $sheet, Club $club): void
@@ -51,6 +55,7 @@ final class ExportClubTeamBuilderCommand extends AbstractExportClubCommand
         foreach ($club->getPlayers() as $player) {
             $currentRow = $sheet->getHighestRow() + 1;
             $sheet->fromArray([$player->getName(), $player->getTeamBuilderLink()], null, 'A' . $currentRow);
+            $sheet->getCell('B' . $currentRow)->getHyperlink()->setUrl( $player->getTeamBuilderLink());
         }
     }
 }
